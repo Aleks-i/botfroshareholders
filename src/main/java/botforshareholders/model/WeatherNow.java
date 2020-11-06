@@ -87,7 +87,7 @@ public class WeatherNow {
                 + "влажность: " + humidity + "%" + "\n"
                 + "описание: " + description + "\n"
                 + "облачность: " + cloudiness + "%" + "\n"
-               + "http://openweathermap.org/img/wn/" + icon + ".png"
+//               + "http://openweathermap.org/img/wn/" + icon + ".png"
                 ;
     }
 }

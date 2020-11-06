@@ -13,7 +13,7 @@ public class TextMessageForAnswer {
         greetings.add("Дарова кожанный");
         greetings.add("И тебе не хворать");
         greetings.add("Как сам? Как сала килограмм? Или как молодой Ван Дам?");
-        greetings.add("Хуясе какие люди... хай");
+        greetings.add("Xай");
         greetings.add("Привет друган");
         greetings.add("Здравствуй хозяин");
         greetings.add("Арасьте, забор покрасте");
@@ -21,6 +21,8 @@ public class TextMessageForAnswer {
         greetings.add("Привет пацаны");
         greetings.add("Привет друзья");
         greetings.add("Всем... Всем... Всем... Доброго времени суток");
+        greetings.add("Парни, эта, всем привет");
+        greetings.add("Привет кожаные");
     }
 
     static {
@@ -31,7 +33,7 @@ public class TextMessageForAnswer {
         answerForValera.add("Говори");
         answerForValera.add("Чо заспамить");
         answerForValera.add("Ты взывал ко мне мой господин");
-        answerForValera.add("Ну заебали блять, поспать не дадут, чо тебе");
+        answerForValera.add("Ну что опять");
         answerForValera.add("Да хозяин");
         answerForValera.add("Ох опять эти спамеры хуямеры проснулись");
         answerForValera.add("Патрон, внимаю каждому твоему слову");
@@ -39,6 +41,13 @@ public class TextMessageForAnswer {
         answerForValera.add("Ну что блять опять");
         answerForValera.add("Ну что блядь опять");
         answerForValera.add("Что");
+        answerForValera.add("Чо");
+        answerForValera.add("А");
+        answerForValera.add("Оу");
+        answerForValera.add("Босс, что");
+        answerForValera.add("Чего кожанный");
+        answerForValera.add("Кожанный, чего тебе");
+        answerForValera.add("Чего хотел мой кожаный друг");
     }
 
     public static String getTextAnswer(List<String> list) {

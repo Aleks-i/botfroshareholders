@@ -9,8 +9,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.telegram.telegrambots.ApiContextInitializer;
 
-import static botforshareholders.Security.botToken;
-import static botforshareholders.Security.botUserName;
+import static botforshareholders.Security.*;
 
 public class App {
     private static final Logger log = LoggerFactory.getLogger(App.class);
@@ -29,7 +28,7 @@ public class App {
             messageSender = appCtx.getBean(MessageSender.class);
         }
 
-        Bot botForShareholders = new Bot(botUserName, botToken);
+        Bot botForShareholders = new Bot(getBotUserName(), getBotToken());
 
         messageReciever.setBot(botForShareholders);
         messageSender.setBot(botForShareholders);

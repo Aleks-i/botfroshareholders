@@ -35,7 +35,9 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.example.telegrambot.App</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>botforshareholders.App</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

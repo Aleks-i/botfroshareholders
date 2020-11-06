@@ -3,7 +3,7 @@ package botforshareholders.handler;
 import botforshareholders.bot.Bot;
 import botforshareholders.command.Command;
 import botforshareholders.command.ParsedCommand;
-import botforshareholders.util.Keyboard;
+import botforshareholders.keyboard.MainKeyboard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -17,9 +17,9 @@ public class SystemHandler extends AbstractHandler {
     private static final Logger log = LoggerFactory.getLogger(SystemHandler.class);
     private final String END_LINE = "\n";
 
-    private final Keyboard keyboard;
+    private final MainKeyboard keyboard;
 
-    public SystemHandler(Bot bot, Keyboard keyboard) {
+    public SystemHandler(Bot bot, MainKeyboard keyboard) {
         super(bot);
         this.keyboard = keyboard;
     }
@@ -29,12 +29,12 @@ public class SystemHandler extends AbstractHandler {
         Command command = parsedCommand.getCommand();
         log.debug("add message to sendQueue for message {}", update.getMessage().getText());
         switch (command) {
-            case GREETING -> bot.sendQueue.add(getMessageGreating(chatId, update.getMessage().getMessageId()));
-            case NEWSECTION -> bot.sendQueue.add(getMessageNewSection(chatId, update.getMessage().getMessageId()));
-            case VALERA -> bot.sendQueue.add(getMessageForValeraWithKeyBoard(chatId, update.getMessage().getMessageId()));
-            case CURRENCY -> bot.sendQueue.add(getMessageForCurrency(chatId, update.getMessage().getMessageId()));
-            case GIRLS -> bot.sendQueue.add(getMessageForGirls(chatId, update.getMessage().getMessageId()));
-            case MINING -> bot.sendQueue.add(getMessageForMining(chatId, update.getMessage().getMessageId()));
+            case GREETING -> Bot.sendQueue.add(getMessageGreating(chatId, update.getMessage().getMessageId()));
+            case NEWSECTION -> Bot.sendQueue.add(getMessageNewSection(chatId, update.getMessage().getMessageId()));
+            case VALERA -> Bot.sendQueue.add(getMessageForValeraWithKeyBoard(chatId, update.getMessage().getMessageId()));
+            case CURRENCY -> Bot.sendQueue.add(getMessageForCurrency(chatId, update.getMessage().getMessageId()));
+            case GIRLS -> Bot.sendQueue.add(getMessageForGirls(chatId, update.getMessage().getMessageId()));
+            case MINING -> Bot.sendQueue.add(getMessageForMining(chatId, update.getMessage().getMessageId()));
             case STICKER -> {
                 return "StickerID: " + parsedCommand.getText();
             }
@@ -68,7 +68,7 @@ public class SystemHandler extends AbstractHandler {
     }
 
     private SendMessage getMessageForMining(String chatId, Integer messageId) {
-        String textMessage = "мой загорелый, волосатый.... друг, скоро тут тут будет вся хуйня)";
+        String textMessage = "Владос, чуть позже";
         return getSendMessage(chatId, messageId, textMessage);
     }
 

@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Scanner;
 
-import static botforshareholders.Security.coinmarketcupTokenApi;
+import static botforshareholders.Security.getCoinmarketcupTokenApi;
 import static botforshareholders.util.CurrencyUtil.formatterBigDecimal;
 
 @Component
@@ -57,7 +57,7 @@ public class CurrencyHandler extends AbstractHandler {
     }
 
     private void setToModelUSD() throws IOException {
-        URL urlUSD= new URL("https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?id=2781&CMC_PRO_API_KEY=" + coinmarketcupTokenApi + "&convert=RUB");
+        URL urlUSD= new URL("https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?id=2781&CMC_PRO_API_KEY=" + getCoinmarketcupTokenApi() + "&convert=RUB");
         Scanner in = new Scanner((InputStream) urlUSD.getContent());
         StringBuilder result = new StringBuilder();
 
@@ -99,7 +99,7 @@ public class CurrencyHandler extends AbstractHandler {
     }
 
     private void setToModelBTC() throws IOException {
-        URL urlBTC = new URL("https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?id=1&CMC_PRO_API_KEY=" + coinmarketcupTokenApi);
+        URL urlBTC = new URL("https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?id=1&CMC_PRO_API_KEY=" + getCoinmarketcupTokenApi());
         Scanner in = new Scanner((InputStream) urlBTC.getContent());
         StringBuilder result = new StringBuilder();
 

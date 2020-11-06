@@ -8,5 +8,9 @@ public enum Command {
     CURRENCY, GIRLS,
     VALERA, MINING,
     ANEKDOTE, WEATHER,
-    STICKER
+    STICKER,
+
+    CALLBACK,
+
+    TEXT_CONTAIN_EMOJI
 }

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import botforshareholders.util.Pair;
+import com.vdurmont.emoji.EmojiParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,6 +37,13 @@ public class Parser {
                 result.setText(text);
             }
         }
+//for message with id emoji
+/*        if (result.getCommand() == Command.NONE) {
+            List<String> emojiContainsInText = EmojiParser.extractEmojis(result.getText());
+            if (emojiContainsInText.size() > 0) {
+                result.setCommand(Command.TEXT_CONTAIN_EMOJI);
+            }
+        }*/
         return result;
     }
 
@@ -73,9 +81,11 @@ public class Parser {
             commandText = new Pair(Command.MINING, text);
         } else if (words.contains("замори") && words.contains("анекдот")) {
             commandText = new Pair(Command.ANEKDOTE, text);
-        } else if (words.contains("погода") || text.startsWith("/")) {
+        } else if (words.contains("погода")) {
             commandText = new Pair(Command.WEATHER, text);
-        } else if (words.contains("привет") || words.contains("здарово") || words.contains("здарова")) {
+        } else if (words.contains("привет") || words.contains("здарово") || words.contains("здарова") || words.contains("бонжур")
+         || (words.contains("добрый") && (words.contains("день") || words.contains("вечер")))
+         || (words.contains("доброе") && words.contains("утро"))) {
              commandText = new Pair(Command.GREETING, text);
          } else commandText = new Pair(Command.NONE, text);
         return commandText;

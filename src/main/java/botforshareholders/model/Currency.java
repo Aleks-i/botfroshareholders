@@ -2,8 +2,6 @@ package botforshareholders.model;
 
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-
 @Component
 public class Currency {
     private String nameEuro;
@@ -75,9 +73,15 @@ public class Currency {
 
     @Override
     public String toString() {
-        return nameEuro + " = " + priceEuro + " деревянных" + "\n" +
-                nameUSD + " = " + priceUSD + " деревянных" + "\n" +
-                nameBTC + " = " + priceBTC + " USD" + "\n" +
-                "объем торгов битка в сутки" + " = " + volume24BTC + " USD";
+        String string = String.format("\n%-10s %-14s %-10s" +
+                        "\n%-12s %-14s %-10s" +
+                        "\n%-10s %-10s %-10s" +
+                        "\n%-25s %-5s %-10s",
+                "еврик:", priceEuro, "деревянных",
+                "багз:", priceUSD, "деревянных",
+                "биток:", priceBTC, "багсов",
+                "торги по битку в сутки", volume24BTC, "багсов");
+        System.out.println(string);
+        return string;
     }
 }

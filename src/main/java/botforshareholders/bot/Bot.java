@@ -2,9 +2,7 @@ package botforshareholders.bot;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -15,10 +13,12 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import static botforshareholders.MessengerFileWriter.writeMessageToFile;
+
 @Component
 public class Bot extends TelegramLongPollingBot {
     private static final Logger LOG = LoggerFactory.getLogger(Bot.class);
-    final int RECONNECT_PAUSE =10000;
+    final int RECONNECT_PAUSE = 10000;
 
     public static final Queue<Object> sendQueue = new ConcurrentLinkedQueue<>();
     public static final Queue<Object> receiveQueue = new ConcurrentLinkedQueue<>();
@@ -52,6 +52,7 @@ public class Bot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         LOG.debug("Receive new Update. updateID: {}", update.getUpdateId());
+        writeMessageToFile(update.getMessage());
         receiveQueue.add(update);
     }
 
@@ -61,10 +62,9 @@ public class Bot extends TelegramLongPollingBot {
         try {
             telegram.registerBot(this);
             LOG.info("[STARTED] TelegramAPI. Bot Connected. Bot class: " + this);
-        }
-        catch (TelegramApiRequestException e) {
+        } catch (TelegramApiRequestException e) {
             LOG.error("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: " + e.getMessage());
-            try{
+            try {
                 Thread.sleep(RECONNECT_PAUSE);
             } catch (InterruptedException e1) {
                 e1.printStackTrace();

@@ -1,5 +1,6 @@
 package botforshareholders.bot;
 
+import botforshareholders.handler.CallbackWeatherHandler;
 import botforshareholders.command.Command;
 import botforshareholders.command.ParsedCommand;
 import botforshareholders.command.Parser;
@@ -27,9 +28,10 @@ public class MessageReciever implements Runnable {
     private final NotifyHandler notifyHandler;
     private final DefaultHandler defaultHandler;
     private final CurrencyHandler currencyHandler;
+    private final CallbackWeatherHandler callBackWeatherHandler;
 
     @Autowired
-    public MessageReciever(Bot bot, Parser parser, AnekdoteHandler anekdoteHandler, SystemHandler systemHandler, WeatherHandler weatherHandler, NotifyHandler notifyHandler, DefaultHandler defaultHandler, CurrencyHandler currencyHandler) {
+    public MessageReciever(Bot bot, Parser parser, AnekdoteHandler anekdoteHandler, SystemHandler systemHandler, WeatherHandler weatherHandler, NotifyHandler notifyHandler, DefaultHandler defaultHandler, CurrencyHandler currencyHandler, CallbackWeatherHandler callBackWeatherHandler) {
         this.bot = bot;
         this.parser = parser;
         this.anekdoteHandler = anekdoteHandler;
@@ -38,13 +40,14 @@ public class MessageReciever implements Runnable {
         this.notifyHandler = notifyHandler;
         this.defaultHandler = defaultHandler;
         this.currencyHandler = currencyHandler;
+        this.callBackWeatherHandler = callBackWeatherHandler;
     }
 
     @Override
     public void run() {
         LOG.info("[STARTED] MsgReciever.  Bot class: " + bot);
         while (true) {
-            for (Object object = bot.receiveQueue.poll(); object != null; object = bot.receiveQueue.poll()) {
+            for (Object object = Bot.receiveQueue.poll(); object != null; object = Bot.receiveQueue.poll()) {
                 LOG.debug("New object for analyze in queue " + object.toString());
                 analyze(object);
             }
@@ -68,21 +71,21 @@ public class MessageReciever implements Runnable {
     private void analyzeForUpdateType(Update update) {
         Long chatId;
         ParsedCommand parsedCommand = new ParsedCommand(Command.NONE, "");
-
         if (update.hasCallbackQuery()) {
             CallbackQuery callbackQuery = update.getCallbackQuery();
             chatId = callbackQuery.getMessage().getChatId();
-            System.out.println(update.getCallbackQuery());
+            parsedCommand = new ParsedCommand(Command.CALLBACK, "");
         } else if (update.getMessage().hasText()) {
             Message message = update.getMessage();
             chatId = message.getChatId();
             parsedCommand = parser.getParsedCommand(message.getText());
         } else {
+//for work replace NONE to STICKER
             Message message = update.getMessage();
             chatId = message.getChatId();
             Sticker sticker = message.getSticker();
             if (sticker != null) {
-                parsedCommand = new ParsedCommand(Command.STICKER, sticker.getFileId());
+                parsedCommand = new ParsedCommand(Command.NONE, sticker.getFileId());
             }
         }
 
@@ -93,7 +96,7 @@ public class MessageReciever implements Runnable {
             SendMessage sendMessage = new SendMessage();
             sendMessage.setChatId(chatId);
             sendMessage.setText(operationResult);
-            bot.sendQueue.add(sendMessage);
+            Bot.sendQueue.add(sendMessage);
         }
     }
 
@@ -124,6 +127,15 @@ public class MessageReciever implements Runnable {
             case NOTIFY -> {
                 LOG.info("Handler for command[" + command.toString() + "] is: " + notifyHandler);
                 return notifyHandler;
+            }
+            case CALLBACK -> {
+                LOG.info("Handler for command[" + command.toString() + "] is: " + callBackWeatherHandler);
+                return callBackWeatherHandler;
+            }
+            case TEXT_CONTAIN_EMOJI -> {
+                EmojiHandler emojiHandler = new EmojiHandler(bot);
+                LOG.info("Handler for command[" + command.toString() + "] is: " + emojiHandler);
+                return emojiHandler;
             }
             default -> {
                 LOG.info("Handler for command[" + command.toString() + "] not Set. Return DefaultHandler");
