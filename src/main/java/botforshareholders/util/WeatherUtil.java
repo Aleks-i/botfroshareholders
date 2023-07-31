@@ -7,6 +7,9 @@ public class WeatherUtil {
     public static final String MSC_LAT = "55.45";
     public static final String MSC_LON = "37.37";
 
+    public static final String ART_LAT = "57.36";
+    public static final String ART_LON = "61.87";
+
     public static final String TAGIL_LAT = "57.55";
     public static final String TAGIL_LON = "59.57";
 

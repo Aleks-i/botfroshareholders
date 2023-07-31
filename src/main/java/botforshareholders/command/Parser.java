@@ -68,8 +68,8 @@ public class Parser {
         Pair commandText;
         List<String> words = getWordsFromMessage(text);
 
-         if (words.contains("валера") || words.contains("валерий") || words.contains("валерчик") ||
-                words.contains("валерьяныч") || words.contains("валерка") || words.contains("валер")) {
+         if (words.contains("валера") || words.contains("валерий") || words.contains("валерчик") || words.contains("валерон") ||
+                words.contains("валерьяныч") || words.contains("валерка") || words.contains("валер") || words.contains("валяська")) {
             commandText = new Pair(Command.VALERA, text);
         } else if (words.contains("что") && words.contains("нибудь") && words.contains("еще")) {
             commandText = new Pair(Command.NEWSECTION, text);
@@ -79,7 +79,7 @@ public class Parser {
             commandText = new Pair(Command.GIRLS,text);
         } else if (words.contains("чо") && words.contains("майнить")) {
             commandText = new Pair(Command.MINING, text);
-        } else if (words.contains("замори") && words.contains("анекдот")) {
+        } else if (words.contains("замори") && words.contains("анекдот") || words.contains("анекдот")) {
             commandText = new Pair(Command.ANEKDOTE, text);
         } else if (words.contains("погода")) {
             commandText = new Pair(Command.WEATHER, text);

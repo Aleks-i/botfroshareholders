@@ -23,21 +23,26 @@ public class WeatherKeyboard {
         inlinekeyboardRowFirst.add(new InlineKeyboardButton().setText("Мск 8 дней").setCallbackData("2_" + MSC_LAT + "_" + MSC_LON + "_" + "Москва"));
 
         List<InlineKeyboardButton> inlinekeyboardRowSecond = new ArrayList<>();
-        inlinekeyboardRowSecond.add(new InlineKeyboardButton("Сочи").setCallbackData("1_" + "Сочи"));
-        inlinekeyboardRowSecond.add(new InlineKeyboardButton("Хуёчи 8 дней").setCallbackData("2_" + SOCHI_LAT + "_" + SOCHI_LON + "_" + "Сочи"));
+        inlinekeyboardRowSecond.add(new InlineKeyboardButton("Артёмовский").setCallbackData("1_" + "Артёмовский"));
+        inlinekeyboardRowSecond.add(new InlineKeyboardButton("Он же на 8 дней").setCallbackData("2_" + ART_LAT + "_" + ART_LON + "_" + "Артёмовский"));
 
         List<InlineKeyboardButton> inlinekeyboardRowThird = new ArrayList<>();
-        inlinekeyboardRowThird.add(new InlineKeyboardButton().setText("Тагииииил").setCallbackData("1_" + "Нижний Тагил"));
-        inlinekeyboardRowThird.add(new InlineKeyboardButton().setText("Торжок").setCallbackData("1_" + "Торжок"));
+        inlinekeyboardRowThird.add(new InlineKeyboardButton("Сочи").setCallbackData("1_" + "Сочи"));
+        inlinekeyboardRowThird.add(new InlineKeyboardButton("Хуёчи 8 дней").setCallbackData("2_" + SOCHI_LAT + "_" + SOCHI_LON + "_" + "Сочи"));
 
         List<InlineKeyboardButton> inlinekeyboardRowFourth = new ArrayList<>();
-        inlinekeyboardRowFourth.add(new InlineKeyboardButton("добавь еще этот город...").setCallbackData("3"));
+        inlinekeyboardRowFourth.add(new InlineKeyboardButton().setText("Тагииииил").setCallbackData("1_" + "Нижний Тагил"));
+        inlinekeyboardRowFourth.add(new InlineKeyboardButton().setText("Торжок").setCallbackData("1_" + "Торжок"));
+
+        List<InlineKeyboardButton> inlinekeyboardRowFifth = new ArrayList<>();
+        inlinekeyboardRowFifth.add(new InlineKeyboardButton("добавь еще этот город...").setCallbackData("3"));
 
         List<List<InlineKeyboardButton>> inlineKeyboardRaws = new ArrayList<>();
         inlineKeyboardRaws.add(inlinekeyboardRowFirst);
         inlineKeyboardRaws.add(inlinekeyboardRowSecond);
         inlineKeyboardRaws.add(inlinekeyboardRowThird);
         inlineKeyboardRaws.add(inlinekeyboardRowFourth);
+        inlineKeyboardRaws.add(inlinekeyboardRowFifth);
         inlineKeyboardMarkup.setKeyboard(inlineKeyboardRaws);
     }
 }

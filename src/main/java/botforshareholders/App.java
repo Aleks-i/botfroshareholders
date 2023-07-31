@@ -28,7 +28,7 @@ public class App {
             messageSender = appCtx.getBean(MessageSender.class);
         }
 
-        Bot botForShareholders = new Bot(getBotUserName(), getBotToken());
+        Bot botForShareholders = new Bot(getShareholdersBotName(), getShareholdersBotToken());
 
         messageReciever.setBot(botForShareholders);
         messageSender.setBot(botForShareholders);
