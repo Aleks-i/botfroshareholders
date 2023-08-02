@@ -2,8 +2,7 @@
 out
 target
 *.iml
-log
-**.properties
-src/main/java/botforshareholders/Security.java
+logs
+**.application.yaml
 .iml
 META-INF
