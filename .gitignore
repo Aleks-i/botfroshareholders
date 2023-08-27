@@ -1,0 +1,15 @@
+.idea
+out
+target
+logs
+**/application.yaml
+META-INF
+*.iws
+*.iml
+*.ipr
+*.properties
+*.mp4
+/content/
+/bot/src/main/resources/media/
+.idea/
+/telegram/db/

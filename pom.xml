@@ -1,0 +1,28 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ru.valerabot</groupId>
+    <artifactId>valerabot</artifactId>
+    <packaging>pom</packaging>
+
+    <version>1.0-SNAPSHOT</version>
+
+    <name>ValeraBot Root</name>
+    <url>https://t.me/valerrianych_bot</url>
+
+    <developers>
+        <developer>
+            <name>Aleksei Ivanov</name>
+            <email>i.vanovaleksval@gmail.com</email>
+            <url>https://t.me/Qet1357</url>
+        </developer>
+    </developers>
+
+    <modules>
+        <module>parent</module>
+        <module>bot</module>
+        <module>persist</module>
+        <module>telegram</module>
+    </modules>
+</project>
