@@ -45,15 +45,15 @@ public class Currency extends AbstractContent implements Runnable {
 
     private String getCurrencyExchangeRate() {
 
-        FiatRub.Coin coinEuro = fiatToRub.data.get(ID_EUR_COINMARKETCAP);
-        FiatRub.Coin coinUSD = fiatToRub.data.get(ID_USD_COINMARKETCAP);
-        FiatRub.Coin coinYUAN = fiatToRub.data.get(ID_YUAN_COINMARKETCAP);
+        FiatRub.Coin coinEuro = fiatToRub.getData().get(ID_EUR_COINMARKETCAP);
+        FiatRub.Coin coinUSD = fiatToRub.getData().get(ID_USD_COINMARKETCAP);
+        FiatRub.Coin coinYUAN = fiatToRub.getData().get(ID_YUAN_COINMARKETCAP);
         CryptoCurrencyUSD.Coin coinBTC = cryptoCurrencyToUSD.getData().get(ID_BTC_COINMARKETCAP);
 
         Currencyes currencyesModel = new Currencyes();
-        currencyesModel.setEuro(coinEuro.symbol, formatterBigDecimal(coinEuro.quote.rub.price));
-        currencyesModel.setUSD(coinUSD.symbol, formatterBigDecimal(coinUSD.quote.rub.price));
-        currencyesModel.setYUAN(coinYUAN.symbol, formatterBigDecimal(coinYUAN.quote.rub.price));
+        currencyesModel.setEuro(coinEuro.getSymbol(), formatterBigDecimal(coinEuro.getQuote().getRub().getPrice()));
+        currencyesModel.setUSD(coinUSD.getSymbol(), formatterBigDecimal(coinUSD.getQuote().getRub().getPrice()));
+        currencyesModel.setYUAN(coinYUAN.getSymbol(), formatterBigDecimal(coinYUAN.getQuote().getRub().getPrice()));
         currencyesModel.setBTC(coinBTC.getSymbol(), formatterBigDecimal(coinBTC.getQuote().getUsd().getPrice()),
                 formatterBigDecimal(coinBTC.getQuote().getUsd().getVolume_24h()));
 

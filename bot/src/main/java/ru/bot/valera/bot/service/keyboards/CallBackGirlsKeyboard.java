@@ -9,17 +9,19 @@ import ru.bot.valera.bot.model.Command;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ru.bot.valera.bot.model.Command.*;
+
 @Component
 public class CallBackGirlsKeyboard implements Keyboard {
     public ReplyKeyboard getKeyboard(long chatId) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
 
         List<InlineKeyboardButton> inlinekeyboardRowFirst = new ArrayList<>();
-        inlinekeyboardRowFirst.add(getInlineKeyboardButton("титечные гифки", String.valueOf(Command.TITS_GIF)));
-        inlinekeyboardRowFirst.add(getInlineKeyboardButton("титечные видосики", String.valueOf(Command.TITS_VIDEO)));
+        inlinekeyboardRowFirst.add(getInlineKeyboardButton(TITS_GIF.getTitle(), String.valueOf(TITS_GIF)));
+        inlinekeyboardRowFirst.add(getInlineKeyboardButton(TITS_VIDEO.getTitle(), String.valueOf(TITS_VIDEO)));
 
         List<InlineKeyboardButton> inlinekeyboardRowSecond = new ArrayList<>();
-        inlinekeyboardRowSecond.add(getInlineKeyboardButton("красотки", String.valueOf(Command.GIRLS_VIDEO)));
+        inlinekeyboardRowSecond.add(getInlineKeyboardButton(GIRLS_VIDEO.getTitle(), String.valueOf(GIRLS_VIDEO)));
 
         List<List<InlineKeyboardButton>> inlineKeyboardRaws = new ArrayList<>();
         inlineKeyboardRaws.add(inlinekeyboardRowFirst);

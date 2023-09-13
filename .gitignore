@@ -9,6 +9,7 @@ META-INF
 *.ipr
 *.properties
 *.mp4
+*.gif
 /content/
 *.MP4
 .idea/

@@ -13,7 +13,7 @@ public enum Command {
     NEW_USER("Новые участники" ), LEFT_USER("Ушедшие участники" ),
     CURRENCY("Криптовалюты" ), WEATHER("Погода - меню" ), CALLBACK_WEATHER("Погода" ), STICKER("" ),
 
-    GIRLS("Девочки меню" ), TITS_GIF("Титько-гифки" ), TITS_VIDEO("Титько-видео" ), GIRLS_VIDEO("Красотки" ),
+    GIRLS("Девочки меню" ), TITS_GIF("Титько-гифки" ), TITS_VIDEO("Титько-видоcики" ), GIRLS_VIDEO("Красотки" ),
     MANS("Мужчины меню" ), MANS_VIDEO("Мужч Видосики" ), MANS_GIF("Мужч Гифки" ),
 
     STATUSES("Изречения" ), ANECDOTE("Анекдоты" ), HOROSCOPE("Гороскопы" ), TEXT_CONTAIN_EMOJI("" ),

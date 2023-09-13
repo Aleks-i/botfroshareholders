@@ -85,9 +85,9 @@ public class MiningCallBack extends AbstractContent implements Runnable {
 
     private String getAlgo(String coin) {
         return noHashrateCoins.stream()
-                .filter(c -> c.coin.equals(coin))
+                .filter(c -> c.getCoin().equals(coin))
                 .findFirst()
-                .map(c -> c.coin)
+                .map(NoHashrateCoin::getCoin)
                 .orElse("" );
     }
 

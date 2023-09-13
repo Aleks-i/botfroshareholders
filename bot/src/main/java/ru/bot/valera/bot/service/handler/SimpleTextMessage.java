@@ -39,7 +39,7 @@ public class SimpleTextMessage extends AbstractContent {
                 return getContent(getRandomElementFromList(ANSWER_FOR_VALERA), updateTO, keyboard);
             }
             case HELP -> {
-                return getContent(MESSAGE_BOT_DESCRIPTION, updateTO);
+                return getContent(MESSAGE_BOT_HELP, updateTO);
             }
             case STICKER -> {
                 return getContent("StickerID: " + updateTO.getSticker().toString(), updateTO);
