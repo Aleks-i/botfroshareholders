@@ -1,0 +1,1 @@
+Start with VM option: -Djava.library.path=telegram/telegram-starter/libs

@@ -10,7 +10,7 @@ META-INF
 *.properties
 *.mp4
 /content/
-*.mp4
 *.MP4
 .idea/
+*.jpeg
 /telegram/db/
