@@ -1,22 +1,32 @@
+port: 8090
+
+1. Before starting, specify the current application(prod, dev).yaml
+2. Before starting, specify the current path to the media file storage in AbstractMediaContent
+3. Uncomment startThread(miningCallBackHandler) in ServiceConfig
+
 Show schedule:
-    1. daily from 10 to 22
+    1. anecdote daily from 10 to 22
     2. statuses daily from 10 to 22
-    3. good morning video daily from 9 to 10
-    4. girls gif daily from 10 to 11
-    5. horoscope daily from 11 to 12
-    6. girls video daily from 12 to 13
-    7. exchange rates every monday and thursday from 13 to 14
-    8. man gif daily from 14 to 15 (initially, show, disabled by default)
-    9. girls day video() daily from 15 to 16
-    10. friday video every friday from 17 to 18
-    11. man day video daily from 17 to 18 (initially, show, disabled by default)
-    12. good night video daily from 21 to 22
+    3. rock saturday and sunday from 10 to 22
+
+    1. good morning video daily from 8 to 8:30
+    2. girls gif daily from 9 to 10
+    3. horoscope daily from 10 to 11
+    4. girls video daily from 12 to 13
+    5. exchange rates every monday and thursday from 13 to 14
+    6. man gif daily from 14 to 15 (initially, show, disabled by default)
+    7. girls day video() daily from 15 to 16
+    8. friday video every friday from 17 to 18
+    9. man day video daily from 17 to 18 (initially, show, disabled by default)
+    10. good night video daily from 21 to 22
+    11. events of day daily after 0
     
 Bot about:
-    Рожденный в СССР
+Рожденный в СССР...
 
-    Для связи: @dev_else
-    
+Для связи: @digitaliaDOTtech
+
+https://digitalia.tech
 
 Bot description:
         Привет. Я, немного информационный, немного развлекательный, робот Валера. Отвечаю на команды с клавиатуры, 

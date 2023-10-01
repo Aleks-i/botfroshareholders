@@ -11,7 +11,7 @@ import static ru.bot.valera.bot.util.SchedulerUtil.horoscopeMinutes;
 public class HoroscopeTrigger extends AbstractTrigger {
 
     public Trigger initTrigger() {
-        return bildTrigger(this, 11, horoscopeMinutes);
+        return bildTrigger(this, 10, horoscopeMinutes);
     }
 
     @Override

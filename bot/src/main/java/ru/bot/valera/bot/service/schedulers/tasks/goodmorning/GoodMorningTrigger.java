@@ -12,7 +12,7 @@ import static ru.bot.valera.bot.util.SchedulerUtil.goodMorningMinutes;
 public class GoodMorningTrigger extends AbstractTrigger {
 
     public Trigger initTrigger() {
-        return bildTrigger(this, 9, goodMorningMinutes);
+        return bildTrigger(this, 8, goodMorningMinutes);
     }
 
     @Override

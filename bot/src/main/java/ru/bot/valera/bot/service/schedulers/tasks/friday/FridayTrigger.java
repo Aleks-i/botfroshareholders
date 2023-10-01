@@ -12,7 +12,7 @@ import static ru.bot.valera.bot.util.SchedulerUtil.fridayMinutes;
 public class FridayTrigger extends AbstractTrigger {
 
     public Trigger initTrigger() {
-        return bildTrigger(this, 17, fridayMinutes, 5);
+        return bildTrigger(this, 17, fridayMinutes, 6);
     }
 
     @Override

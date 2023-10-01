@@ -23,6 +23,7 @@ public class MainKeyboard implements Keyboard {
         KeyboardRow rowSecond = new KeyboardRow();
         KeyboardRow rowThird = new KeyboardRow();
         KeyboardRow rowFourth = new KeyboardRow();
+        KeyboardRow rowFive = new KeyboardRow();
 
         rowFirst.add(new KeyboardButton("Погода" ));
         rowFirst.add(new KeyboardButton("Чё помайнить" ));
@@ -31,15 +32,18 @@ public class MainKeyboard implements Keyboard {
         rowSecond.add(new KeyboardButton("Замори анекдот" ));
 
         rowThird.add(new KeyboardButton("Курс валют" ));
-        rowThird.add(new KeyboardButton("Девочки" ));
+        rowThird.add(new KeyboardButton("Другие видосики" ));
 
+        rowFourth.add(new KeyboardButton("Девочки" ));
         rowFourth.add(new KeyboardButton("Горячие самсы" ));
-        rowFourth.add(new KeyboardButton("Настройки бота и рассылки" ));
+
+        rowFive.add(new KeyboardButton("Настройки бота и рассылки" ));
 
         keyboardRowList.add(rowFirst);
         keyboardRowList.add(rowSecond);
         keyboardRowList.add(rowThird);
         keyboardRowList.add(rowFourth);
+        keyboardRowList.add(rowFive);
         replyKeyboardMarkup.setKeyboard(keyboardRowList);
 
         return replyKeyboardMarkup;

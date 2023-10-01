@@ -1,19 +1,19 @@
 package ru.bot.valera.bot.service.schedulers.tasks;
 
+import lombok.RequiredArgsConstructor;
 import org.quartz.JobExecutionContext;
-import ru.bot.valera.bot.to.UpdateTO;
+import org.springframework.stereotype.Component;
+import ru.bot.valera.bot.to.UpdateTo;
 
-import static ru.bot.valera.bot.bot.Bot.CHAT_STORAGE;
 import static ru.bot.valera.bot.bot.MessageReceiver.receiveQueue;
+import static ru.bot.valera.bot.model.SourceMessageType.TASK;
 
+@Component
+@RequiredArgsConstructor
 public abstract class AbstractJob implements MailerJob {
 
     public void execute(JobExecutionContext context) {
 
-        CHAT_STORAGE.entrySet().stream()
-                .filter(es -> es.getValue().getMailerMap().get(this.getCommandType()))
-                .map(es -> new UpdateTO(this.getCommandType(), es.getKey()))
-                .forEach(receiveQueue::add);
-        System.gc();
+        receiveQueue.add(new UpdateTo(TASK, this.getCommandType()));
     }
 }

@@ -4,17 +4,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.bot.valera.bot.service.Service;
-import ru.bot.valera.bot.to.UpdateTO;
+import ru.bot.valera.bot.to.UpdateTo;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class MessageReceiver implements Runnable {
-    public static final Queue<UpdateTO> receiveQueue = new ConcurrentLinkedQueue<>();
+    public static final Queue<UpdateTo> receiveQueue = new ConcurrentLinkedQueue<>();
 
     private static final int WAIT_FOR_NEW_MESSAGE_DELAY = 100;
 
@@ -22,10 +24,14 @@ public class MessageReceiver implements Runnable {
 
     @Override
     public void run() {
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
         while (true) {
-            for (UpdateTO updateTo = receiveQueue.poll(); updateTo != null; updateTo = receiveQueue.poll()) {
-                log.debug("Update recieved in MessageReceiver" );
-                service.process(updateTo);
+            while (!receiveQueue.isEmpty()) {
+                UpdateTo updateTo = receiveQueue.poll();
+                executorService.submit(() -> {
+                    log.info("receiveQueue receive new update, command: {}", updateTo.getCommand());
+                    service.process(updateTo);
+                });
             }
             try {
                 TimeUnit.MILLISECONDS.sleep(WAIT_FOR_NEW_MESSAGE_DELAY);

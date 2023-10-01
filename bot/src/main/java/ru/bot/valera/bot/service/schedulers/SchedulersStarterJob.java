@@ -14,19 +14,27 @@ public class SchedulersStarterJob implements Job {
 
     public void execute(JobExecutionContext context) {
 
+        goodMorningMinutes = getRandomMinutesForFirstHalfHour();
         goodNightMinutes = getRandomMinutesForHour();
+        fridayMinutes = getRandomMinutesForHour();
+
         horoscopeMinutes = getRandomMinutesForHour();
+
         titsGifMinutes = getRandomMinutesForHour();
         titsVideoMinutes = getRandomMinutesForHour();
+        girlsVideoMinutes = getRandomMinutesForHour();
+
+        mansVideoMinutes = getRandomMinutesForHour();
         mansGifMinutes = getRandomMinutesForHour();
-        exchangeRates = getRandomMinutesForHour();
+
+        exchangeRatesMinutes = getRandomMinutesForHour();
 
         anecdoteTime = getRandomTime(10, 22);
         statusTime = getRandomTime(10, 22);
 
         CHATS_CONTENT_COUNTER.forEach((id, m) -> m.forEach((c, chc) -> {
             chc.setCount(0);
-            chc.setShow(false);
+            chc.setShowNotify(false);
         }));
 
         SchedulersStarter schedulersStarter = getSchedulerProperty(context);

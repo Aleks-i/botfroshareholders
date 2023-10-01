@@ -18,7 +18,6 @@ import ru.bot.valera.bot.bot.MessageReceiver;
 import ru.bot.valera.bot.bot.MessageSender;
 import ru.bot.valera.bot.model.persist.chat.Chat;
 import ru.bot.valera.bot.repository.ChatRepository;
-import ru.bot.valera.bot.service.ParserCommand;
 import ru.bot.valera.bot.util.JsonUtil;
 
 import java.util.List;
@@ -36,28 +35,16 @@ public class AppConfig {
     private static final int RECONNECT_PAUSE = 5_000;
     private static final int PRIORITY_FOR_RECEIVER = 3;
     private static final int PRIORITY_FOR_SENDER = 2;
-    public static final int COUNT_CONTENT_IN_DAY = 2;
 
     final Bot bot;
     final MessageSender messageSender;
     final MessageReceiver messageReceiver;
-    final TelegramBotConfig telegramBotConfig;
     final ChatRepository chatRepository;
-    final ParserCommand parserCommand;
 
     @EventListener({ApplicationReadyEvent.class})
     public void init() {
-        Thread receiver = new Thread(messageReceiver);
-        receiver.setDaemon(true);
-        receiver.setName("MsgReciever" );
-        receiver.setPriority(PRIORITY_FOR_RECEIVER);
-        receiver.start();
-
-        Thread sender = new Thread(messageSender);
-        sender.setDaemon(true);
-        sender.setName("MsgSender" );
-        sender.setPriority(PRIORITY_FOR_SENDER);
-        sender.start();
+        startThread(messageReceiver, "MsgReceiver", PRIORITY_FOR_RECEIVER);
+        startThread(messageSender, "MsgSender", PRIORITY_FOR_SENDER);
 
         List<Chat> chats = chatRepository.findAll();
         chats.forEach(ch -> {
@@ -69,6 +56,14 @@ public class AppConfig {
         });
 
         botConnect();
+    }
+
+    private void startThread(Runnable runnable, String threadName, int priority) {
+        Thread receiver = new Thread(runnable);
+        receiver.setDaemon(true);
+        receiver.setName(threadName);
+        receiver.setPriority(priority);
+        receiver.start();
     }
 
     private void botConnect() {

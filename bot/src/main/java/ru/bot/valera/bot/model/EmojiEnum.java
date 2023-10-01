@@ -8,7 +8,8 @@ public enum EmojiEnum {
     ENABLE("white_check_mark" ),
     DISABLE("x" ),
     RU("ru" ),
-    MONEY("money_with_wings" );
+    MONEY("money_with_wings" ),
+    FIST("fist");
 
     private final String title;
 

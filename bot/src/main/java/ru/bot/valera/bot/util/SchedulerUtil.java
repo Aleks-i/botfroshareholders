@@ -16,7 +16,7 @@ public class SchedulerUtil {
     public static String SCHEDULERS_STARTER_NAME_PROPERTY = "schedulersStarter";
     public static String MAILER_NAME_PROPERTY = "mailer";
 
-    public static int goodMorningMinutes = getRandomMinutesForHour();
+    public static int goodMorningMinutes = getRandomMinutesForFirstHalfHour();
     public static int goodNightMinutes = getRandomMinutesForHour();
     public static int fridayMinutes = getRandomMinutesForHour();
 
@@ -29,16 +29,24 @@ public class SchedulerUtil {
     public static int mansVideoMinutes = getRandomMinutesForHour();
     public static int mansGifMinutes = getRandomMinutesForHour();
 
-    public static int exchangeRates = getRandomMinutesForHour();
+    public static int exchangeRatesMinutes = getRandomMinutesForHour();
 
     public static int[] anecdoteTime = getRandomTime(10, 22);
     public static int[] statusTime = getRandomTime(10, 22);
+    public static int[] rockTime = getRandomTime(10, 22);
+
+    public static int eventsOfDay = getRandomMinutesForHour();
+    public static int weatherEkb = getRandomMinutesForHour();
 
     public static int[] getRandomTime(int start, int end) {
         int[] result = new int[2];
         result[0] = getRandom(start, end);
         result[1] = getRandomMinutesForHour();
         return result;
+    }
+
+    public static int getRandomMinutesForFirstHalfHour() {
+        return getRandom(0, 29);
     }
 
     public static int getRandomMinutesForHour() {

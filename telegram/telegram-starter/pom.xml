@@ -7,16 +7,17 @@
     <parent>
         <groupId>ru.bot.valera</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
         <relativePath>../../parent/pom.xml</relativePath>
     </parent>
 
     <artifactId>telegram-starter</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
     <name>Telegram starter</name>
 
     <build>
+        <finalName>telegram-starter</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

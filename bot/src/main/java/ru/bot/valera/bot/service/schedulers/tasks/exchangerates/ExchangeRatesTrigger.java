@@ -5,13 +5,13 @@ import org.springframework.stereotype.Component;
 import ru.bot.valera.bot.model.Command;
 import ru.bot.valera.bot.service.schedulers.tasks.AbstractTrigger;
 
-import static ru.bot.valera.bot.util.SchedulerUtil.exchangeRates;
+import static ru.bot.valera.bot.util.SchedulerUtil.exchangeRatesMinutes;
 
 @Component
 public class ExchangeRatesTrigger extends AbstractTrigger {
 
     public Trigger initTrigger() {
-        return bildTrigger(this, 13, exchangeRates, 1, 4);
+        return bildTrigger(this, 13, exchangeRatesMinutes, 2, 6);
     }
 
     @Override

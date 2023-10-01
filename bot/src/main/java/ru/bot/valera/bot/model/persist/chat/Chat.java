@@ -1,8 +1,10 @@
 package ru.bot.valera.bot.model.persist.chat;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import ru.bot.valera.bot.model.Command;
 import ru.bot.valera.bot.model.persist.AbstractBaseEntity;
 
@@ -14,14 +16,17 @@ import java.util.Map;
 @Getter
 @Table(name = "chats" )
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Chat extends AbstractBaseEntity {
 
-    @Column(name = "chat_id" )
-    private long chatId;
+    long chatId;
 
-    @Column(name = "type_chat" )
+    String userName;
+    String firstName;
+    String lastName;
+
     @Enumerated(EnumType.STRING)
-    private ChatType chatType;
+    ChatType chatType;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @MapKeyEnumerated(value = EnumType.STRING)
@@ -29,11 +34,14 @@ public class Chat extends AbstractBaseEntity {
             joinColumns = {@JoinColumn(name = "chat_id", referencedColumnName = "id" )})
     @MapKeyColumn(name = "type" )
     @Column(name = "is_active" )
-    private final Map<Command, Boolean> mailerMap = new HashMap<>();
+    final Map<Command, Boolean> mailerMap = new HashMap<>();
 
-    public Chat(long chatId, ChatType chatType) {
+    public Chat(long chatId, String userName, ChatType chatType, String firstName, String lastName) {
         this.chatId = chatId;
+        this.userName = userName;
         this.chatType = chatType;
+        this.firstName = firstName;
+        this.lastName = lastName;
         Arrays.stream(Command.values())
                 .forEach(mt -> mailerMap.put(mt, true));
     }

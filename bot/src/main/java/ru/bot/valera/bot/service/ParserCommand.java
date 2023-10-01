@@ -9,77 +9,109 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.bot.valera.bot.TelegramBotConfig;
 import ru.bot.valera.bot.model.Command;
 import ru.bot.valera.bot.model.persist.chat.ChatType;
-import ru.bot.valera.bot.to.UpdateTO;
+import ru.bot.valera.bot.to.UpdateTo;
 
 import java.util.Arrays;
 
 import static ru.bot.valera.bot.model.Command.*;
+import static ru.bot.valera.bot.model.SourceMessageType.BOT;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class ParserCommand {
-    private final String PREFIX_FOR_COMMAND = "/";
     String DELIMITER_COMMAND_BOTNAME = "@";
 
-    @Value("${bot.name}" )
+    @Value("${bot.name}")
     private String botName;
 
-    public UpdateTO getParsedUpdate(Update update) {
-        log.info("parser command get update {}", update);
-        UpdateTO updateTO = new UpdateTO(NONE);
+    final TelegramBotConfig telegramBotConfig;
+    final TelegramApi telegramApi;
 
-        Message message = update.getMessage();
-        if (update.hasCallbackQuery()) {
-            CallbackQuery callbackQuery = update.getCallbackQuery();
-            message = callbackQuery.getMessage();
+    public UpdateTo getParsedUpdate(Update update) {
+        UpdateTo updateTo = new UpdateTo(BOT, NONE);
+        Message message;
 
-            setIDsParserUdate(message, updateTO);
-            updateTO.setUserIdFrom(callbackQuery.getFrom().getId());
-
-            String[] callBackDataPars = callbackQuery.getData().split("-" );
-            updateTO.setCallBackData(Arrays.stream(callBackDataPars).skip(1L).toArray(String[]::new));
-
-            updateTO.setCommand(Command.valueOf(callBackDataPars[0]));
-        } else if (update.getMessage() != null && message.getNewChatMembers().size() != 0) {
-            setIDsParserUdate(message, updateTO);
-            updateTO.setCommand(NEW_USER);
-        } else if (update.getMessage() != null && message.getLeftChatMember() != null) {
-            setIDsParserUdate(message, updateTO);
-            updateTO.setCommand(LEFT_USER);
-        } else if (message != null && update.getMessage().hasText()) {
-            Command command = getCommand(message.getText());
-            if (command == TEXT_CONTAIN_EMOJI) {
-                updateTO.setChatType(ChatType.valueOf(message.getChat().getType().toUpperCase()));
-                setIDsParserUdate(message, updateTO);
-                updateTO.setMessage(message);
-                //shows emoji id in chat after sending emoji in chat
-                //for work replace NONE to TEXT_CONTAIN_EMOJI
-                updateTO.setCommand(NONE);
-            } else {
-                updateTO.setChatType(ChatType.valueOf(message.getChat().getType().toUpperCase()));
-                setIDsParserUdate(message, updateTO);
-                updateTO.setCommand(getCommand(message.getText()));
+        if (update.hasMessage()) {
+            message = update.getMessage();
+            if (message.getChat().isChannelChat()) {
+                return updateTo;
             }
-        } else if (message != null && update.getMessage().hasSticker()) {
-            //shows sticker id in chat after sending sticker in chat
-            //for work replace NONE to STICKER
-            setIDsParserUdate(message, updateTO);
-            updateTO.setSticker(message.getSticker());
-            updateTO.setCommand(NONE);
+            updateTo.setUserIdFrom(message.getFrom().getId());
+
+            if (message.getFrom().getId().equals(telegramBotConfig.getMY_TELEGRAM_ID())) {
+                if (message.hasVideo()) {
+                    updateTo.setCommand(FROM_ME_VIDEO);
+                } else if (message.hasAnimation()) {
+                    updateTo.setCommand(FROM_ME_ANIMATION);
+                } else if (message.hasPhoto()) {
+                    updateTo.setCommand(FROM_ME_PHOTO);
+                } else if (message.hasText()) {
+                    updateTo.setCommand(FROM_ME_TEXT);
+                } else if (message.hasDocument()) {
+                    updateTo.setCommand(DOCUMENT_FROM_ME);
+                }
+                updateTo.setChatId(telegramBotConfig.getMY_TELEGRAM_CHANNEL_ID());
+                updateTo.setMessage(message);
+            } else if (message.getNewChatMembers().size() != 0) {
+                setIDsParserUpdate(message, updateTo);
+                updateTo.setCommand(NEW_USER);
+            } else if (message.getLeftChatMember() != null) {
+                setIDsParserUpdate(message, updateTo);
+                updateTo.setCommand(LEFT_USER);
+            } else if (update.getMessage().hasText()) {
+                Command command = getCommand(message.getText());
+                if (command == TEXT_CONTAIN_EMOJI) {
+                    updateTo.setChatType(ChatType.valueOf(message.getChat().getType().toUpperCase()));
+                    setIDsParserUpdate(message, updateTo);
+                    updateTo.setMessage(message);
+                    //shows emoji id in chat after sending emoji in chat
+                    //for work replace NONE to TEXT_CONTAIN_EMOJI
+                    updateTo.setCommand(NONE);
+                } else {
+                    updateTo.setChatType(ChatType.valueOf(message.getChat().getType().toUpperCase()));
+                    setIDsParserUpdate(message, updateTo);
+                    updateTo.setCommand(getCommand(message.getText()));
+                }
+            } else if (update.getMessage().hasSticker()) {
+                //shows sticker id in chat after sending sticker in chat
+                //for work replace NONE to STICKER
+                setIDsParserUpdate(message, updateTo);
+                updateTo.setSticker(message.getSticker());
+                updateTo.setCommand(NONE);
+            }
+        } else if (update.hasCallbackQuery()) {
+            CallbackQuery callbackQuery = update.getCallbackQuery();
+            if (callbackQuery.getMessage().getChat().isChannelChat()) {
+                return updateTo;
+            }
+
+            long userIdFrom = callbackQuery.getFrom().getId();
+            if (telegramApi.isGroupMember(callbackQuery.getMessage().getChatId(), userIdFrom)) {
+
+                message = callbackQuery.getMessage();
+                setIDsParserUpdate(message, updateTo);
+                updateTo.setUserIdFrom(userIdFrom);
+
+                String[] callBackDataArr = callbackQuery.getData().split("-");
+                updateTo.setCallBackData(Arrays.stream(callBackDataArr).skip(1L).toArray(String[]::new));
+
+                updateTo.setCommand(Command.valueOf(callBackDataArr[0]));
+            }
         }
-        return updateTO;
+
+        return updateTo;
     }
 
-    private String[] parse(String data) {
-        return data.split("-" );
-    }
-
-    private void setIDsParserUdate(Message message, UpdateTO updateTO) {
-        updateTO.setChatId(message.getChatId());
-        updateTO.setMessageId(message.getMessageId());
+    private void setIDsParserUpdate(Message message, UpdateTo updateTo) {
+        updateTo.setChatId(message.getChatId());
+        updateTo.setMessageId(message.getMessageId());
+        updateTo.setUserName(message.getChat().getUserName());
+        updateTo.setFirstName(message.getChat().getFirstName());
+        updateTo.setLastName(message.getChat().getLastName());
     }
 
     private Command getCommand(String text) {
@@ -89,43 +121,45 @@ public class ParserCommand {
             return Command.NONE;
         }
         if (isMessageIsCommand(message)) {
-            if (message.contains(DELIMITER_COMMAND_BOTNAME) && message.substring(0, message.indexOf(DELIMITER_COMMAND_BOTNAME)).equals("/help" ) ||
-                    message.equals("/help" )) {
+            if (message.contains(DELIMITER_COMMAND_BOTNAME) && message.substring(0, message.indexOf(DELIMITER_COMMAND_BOTNAME)).equals("/help") ||
+                    message.equals("/help")) {
                 return HELP;
-            } else if (message.contains(DELIMITER_COMMAND_BOTNAME) && message.substring(0, message.indexOf(DELIMITER_COMMAND_BOTNAME)).equals("/start" ) ||
-                    message.equals("/start" )) {
+            } else if (message.contains(DELIMITER_COMMAND_BOTNAME) && message.substring(0, message.indexOf(DELIMITER_COMMAND_BOTNAME)).equals("/start") ||
+                    message.equals("/start")) {
                 return START;
-            } else if (message.contains(DELIMITER_COMMAND_BOTNAME) && message.substring(0, message.indexOf(DELIMITER_COMMAND_BOTNAME)).equals("/end" ) ||
-                    message.equals("/end" )) {
+            } else if (message.contains(DELIMITER_COMMAND_BOTNAME) && message.substring(0, message.indexOf(DELIMITER_COMMAND_BOTNAME)).equals("/end") ||
+                    message.equals("/end")) {
                 return END;
             }
         }
 
-        if (message.contains("валера" ) || message.contains("валерий" ) || message.contains("валерчик" ) || message.contains("валерон" ) ||
-                message.contains("валерьяныч" ) || message.contains("валерка" ) || message.contains("валер" ) || message.contains("валяська" )) {
+        if (message.contains("валера") || message.contains("валерий") || message.contains("валерчик") || message.contains("валерон") ||
+                message.contains("валерьяныч") || message.contains("валерка") || message.contains("валер") || message.contains("валяська")) {
             return VALERA;
-        } else if (message.contains("что нибудь еще" )) {
+        } else if (message.contains("что нибудь еще")) {
             return STATUSES;
-        } else if ((message.contains("курс" ) || message.contains("курсы" )) && message.contains("валют" )) {
+        } else if ((message.contains("курс") || message.contains("курсы")) && message.contains("валют")) {
             return CURRENCY;
-        } else if (message.equals("девочки" )) {
+        } else if (message.equals("девочки")) {
             return GIRLS;
-        } else if (message.contains("горячие самсы" )) {
+        } else if (message.contains("горячие самсы")) {
             return MANS;
-        } else if (message.contains("чё помайнить" )) {
+        } else if (message.contains("чё помайнить")) {
             return MINING;
-        } else if (message.contains("анекдот" )) {
+        } else if (message.contains("другие видосики")) {
+            return OTHER_VIDEO;
+        } else if (message.contains("анекдот")) {
             return ANECDOTE;
-        } else if (message.contains("статусы вконтакте" )) {
+        } else if (message.contains("статусы вконтакте")) {
             return STATUSES;
-        } else if (message.contains("погода" )) {
+        } else if (message.contains("погода")) {
             return WEATHER;
-        } else if (message.contains("привет" ) || message.contains("прювет" ) || message.contains("здарово" ) || message.contains("здарова" ) || message.contains("бонжур" )
-                || (message.contains("добрый" ) && (message.contains("день" ) || message.contains("вечер" )))
-                || (message.contains("доброе" ) && message.contains("утро" ))
-                || (message.contains("дароф" ) || message.contains("здароф" ))) {
+        } else if (message.contains("привет") || message.contains("прювет") || message.contains("здарово") || message.contains("здарова") || message.contains("бонжур")
+                || (message.contains("добрый") && (message.contains("день") || message.contains("вечер")))
+                || (message.contains("доброе") && message.contains("утро"))
+                || (message.contains("дароф") || message.contains("здароф"))) {
             return GREETING;
-        } else if (message.contains("настройки бота и рассылки" )) {
+        } else if (message.contains("настройки бота и рассылки")) {
             return SETTINGS;
         } else if (EmojiManager.containsEmoji(message)) {
             return TEXT_CONTAIN_EMOJI;
@@ -143,6 +177,7 @@ public class ParserCommand {
     }
 
     private boolean isMessageIsCommand(String text) {
-        return text.startsWith("/" );
+        String PREFIX_FOR_COMMAND = "/";
+        return text.startsWith(PREFIX_FOR_COMMAND);
     }
 }

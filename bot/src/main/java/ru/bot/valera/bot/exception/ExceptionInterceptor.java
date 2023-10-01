@@ -6,8 +6,8 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 import ru.bot.valera.bot.model.Content;
-import ru.bot.valera.bot.service.handler.exception.ExceptionHandler;
-import ru.bot.valera.bot.to.UpdateTO;
+import ru.bot.valera.bot.service.handlers.exception.ExceptionHandler;
+import ru.bot.valera.bot.to.UpdateTo;
 
 import static ru.bot.valera.bot.bot.MessageSender.sendQueue;
 
@@ -21,7 +21,7 @@ public class ExceptionInterceptor {
 
     @AfterThrowing(pointcut = "execution(* ru.bot.valera.bot.service..*.*(..))", throwing = "ex" )
     public void handle(MessageCounterException ex) {
-        UpdateTO updateTO = ex.getUpdateTO();
+        UpdateTo updateTO = ex.getUpdateTO();
         updateTO.setErrorMessage(ex.getErrorMessage());
         Content content = exceptionHandler.handle(ex.getUpdateTO());
         sendQueue.add(content);

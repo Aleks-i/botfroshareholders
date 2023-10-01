@@ -13,8 +13,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.bot.valera.bot.model.Command;
 import ru.bot.valera.bot.model.persist.chat.Chat;
 import ru.bot.valera.bot.service.ParserCommand;
-import ru.bot.valera.bot.service.handler.exception.ContentShowCounter;
-import ru.bot.valera.bot.util.MessengerFileWriter;
+import ru.bot.valera.bot.service.handlers.exception.ContentShowCounter;
+import ru.bot.valera.bot.to.UpdateTo;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,6 +33,7 @@ public class Bot extends TelegramLongPollingBot {
     String botUsername;
     @Value("${bot.token}")
     String botToken;
+    public static final int COUNT_CONTENT_IN_DAY = 1;
     final ParserCommand parserCommand;
 
     public static final Map<Long, Chat> CHAT_STORAGE = new ConcurrentHashMap<>();
@@ -40,8 +41,9 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        MessengerFileWriter.writeMessageToFile(update.getMessage());
-        receiveQueue.add(parserCommand.getParsedUpdate(update));
+        UpdateTo parsedUpdate = parserCommand.getParsedUpdate(update);
+        log.info("bot get update command {}", parsedUpdate.getCommand());
+        receiveQueue.add(parsedUpdate);
     }
 
     @Override

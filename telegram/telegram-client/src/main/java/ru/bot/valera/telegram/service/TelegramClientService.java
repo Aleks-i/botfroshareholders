@@ -3,6 +3,7 @@ package ru.bot.valera.telegram.service;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedDeque;
+
+import static ru.bot.valera.telegram.service.MessageType.*;
 
 @Slf4j
 @Getter
@@ -29,6 +32,7 @@ public class TelegramClientService {
 
     private static final long POLITE_AND_EVIL_ID = -1001793975669L;
     private static final long HOROSCOPE_ID = -1001495354288L;
+    private static final long MAIN_OF_DAY_ID = -1001135275304L;
 
     public TelegramClientService(@Lazy TelegramClient telegramClient) {
         this.telegramClient = telegramClient;
@@ -40,8 +44,9 @@ public class TelegramClientService {
 
     @PostConstruct
     public void init() {
-        messageTarget.put(MessageType.HOLIDAYS, "" );
-        messageTarget.put(MessageType.HOROSCOPE, "" );
+        messageTarget.put(HOLIDAYS, "" );
+        messageTarget.put(HOROSCOPE, "" );
+        messageTarget.put(MAIN_OF_DAY, "" );
     }
 
     @Scheduled(fixedDelay = 1000)
@@ -66,9 +71,11 @@ public class TelegramClientService {
 
     private void fillMessageTarget(Long chatId, String message) {
         if (chatId == POLITE_AND_EVIL_ID && checkMatchesInMessage(MessageUtil.HOLIDAYS_WORDS, message)) {
-            messageTarget.put(MessageType.HOLIDAYS, message);
+            messageTarget.put(HOLIDAYS, message);
         } else if (chatId == HOROSCOPE_ID && checkMatchesInMessage(MessageUtil.HOROSCOPE_WORDS, message)) {
-            messageTarget.put(MessageType.HOROSCOPE, message);
+            messageTarget.put(HOROSCOPE, message);
+        } else if (chatId == MAIN_OF_DAY_ID) {
+            messageTarget.put(MAIN_OF_DAY, message);
         }
     }
 

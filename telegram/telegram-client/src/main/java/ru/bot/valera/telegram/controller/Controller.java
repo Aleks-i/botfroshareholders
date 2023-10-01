@@ -9,6 +9,8 @@ import ru.bot.valera.telegram.model.TextMessage;
 import ru.bot.valera.telegram.service.MessageType;
 import ru.bot.valera.telegram.service.TelegramClientService;
 
+import static ru.bot.valera.telegram.service.MessageType.*;
+
 @RestController
 @RequestMapping(value = "/api/text/", produces = MediaType.APPLICATION_JSON_VALUE)
 public class Controller {
@@ -18,12 +20,17 @@ public class Controller {
 
     @GetMapping("horoscope" )
     public TextMessage horoscope() {
-        return new TextMessage(getText(MessageType.HOROSCOPE));
+        return new TextMessage(getText(HOROSCOPE));
     }
 
     @GetMapping("holidays" )
     public TextMessage holidays() {
-        return new TextMessage(getText(MessageType.HOLIDAYS));
+        return new TextMessage(getText(HOLIDAYS));
+    }
+
+    @GetMapping("main/day" )
+    public TextMessage mainOfDay() {
+        return new TextMessage(getText(MAIN_OF_DAY));
     }
 
     private String getText(MessageType messageType) {

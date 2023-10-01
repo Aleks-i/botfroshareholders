@@ -72,7 +72,7 @@ public class SchedulersStarter {
 
     private void startSchedulerStart() {
         JobDetail job = JobBuilder.newJob(SchedulersStarterJob.class)
-                .withIdentity(SchedulersStarterTrigger.class.getSimpleName(), "SCHEDULERS_STARTER" )
+                .withIdentity(SchedulersStarterTrigger.class.getSimpleName(), "SCHEDULERS_RSTARTE" )
                 .build();
         try {
             Scheduler scheduler = new StdSchedulerFactory().getScheduler();

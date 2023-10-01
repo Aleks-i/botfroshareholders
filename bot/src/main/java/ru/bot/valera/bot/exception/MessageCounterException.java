@@ -4,13 +4,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import ru.bot.valera.bot.to.UpdateTO;
+import ru.bot.valera.bot.to.UpdateTo;
 
 @Getter
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MessageCounterException extends RuntimeException {
 
-    final UpdateTO updateTO;
+    final UpdateTo updateTO;
     final String errorMessage;
 }

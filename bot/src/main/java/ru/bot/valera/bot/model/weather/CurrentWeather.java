@@ -3,6 +3,7 @@ package ru.bot.valera.bot.model.weather;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class CurrentWeather {
     int dt;
     Coord coord;
     ArrayList<Weather> weather;
+    @Setter
     String name;
     int cod;
     int id;

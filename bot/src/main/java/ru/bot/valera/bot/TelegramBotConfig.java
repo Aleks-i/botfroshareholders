@@ -16,4 +16,10 @@ public class TelegramBotConfig {
 
     @Value("${bot.token}" )
     String botToken;
+
+    @Value("${telegram-chats-id.digitalia}")
+    long MY_TELEGRAM_ID;
+
+    @Value("${telegram-chats-id.chanel-for-resend}")
+    long MY_TELEGRAM_CHANNEL_ID;
 }

@@ -14,14 +14,14 @@ public class WeatherUtil {
     public static final String MSC_LAT = "55.7504461";
     public static final String MSC_LON = "37.6174943";
 
-    public static final String PITERBURG_LAT = "59.938732";
-    public static final String PITERBURG_LON = "30.316229";
+    public static final String PITERBURG_LAT = "59.8944";
+    public static final String PITERBURG_LON = "30.2642";
 
     public static final String NOVOSIB_LAT = "55.0282171";
     public static final String NOVOSIB_LON = "82.9234509";
 
-    public static final String EKB_LAT = "56.839104";
-    public static final String EKB_LON = "60.60825";
+    public static final String EKB_LAT = "56.8575";
+    public static final String EKB_LON = "60.6125";
 
     public static final String KAZAN_LAT = "55.7823547";
     public static final String KAZAN_LON = "49.1242266";
@@ -38,8 +38,8 @@ public class WeatherUtil {
     public static final String SAMARA_LAT = "53.198627";
     public static final String SAMARA_LON = "50.113987";
 
-    public static final String UFA_LAT = "54.7261409";
-    public static final String UFA_LON = "55.947499";
+    public static final String UFA_LAT = "54.735152";
+    public static final String UFA_LON = "55.958736";
 
     public static final String ROSTOV_ON_DON_LAT = "47.2213858";
     public static final String ROSTOV_ON_DON_LON = "39.7114196";

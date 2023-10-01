@@ -5,13 +5,13 @@ import org.springframework.stereotype.Component;
 import ru.bot.valera.bot.model.Command;
 import ru.bot.valera.bot.service.schedulers.tasks.AbstractTrigger;
 
-import static ru.bot.valera.bot.util.SchedulerUtil.titsGifMinutes;
+import static ru.bot.valera.bot.util.SchedulerUtil.girlsVideoMinutes;
 
 @Component
 public class TitsGifTrigger extends AbstractTrigger {
 
     public Trigger initTrigger() {
-        return bildTrigger(this, 10, titsGifMinutes);
+        return bildTrigger(this, 9, girlsVideoMinutes);
     }
 
     @Override

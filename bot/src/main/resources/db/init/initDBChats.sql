@@ -8,7 +8,10 @@ CREATE TABLE chats
 (
     id               BIGINT PRIMARY KEY DEFAULT nextval('id_chats_seq'),
     chat_id          BIGINT                     NOT NULL,
-    type_chat        VARCHAR                    NOT NULL
+    chat_type        VARCHAR                    NOT NULL,
+    user_name        VARCHAR                    NOT NULL,
+    first_name       VARCHAR,
+    last_name        VARCHAR
 );
 
 CREATE TABLE mailer_type
