@@ -9,7 +9,7 @@ CREATE TABLE chats
     id               BIGINT PRIMARY KEY DEFAULT nextval('id_chats_seq'),
     chat_id          BIGINT                     NOT NULL,
     chat_type        VARCHAR                    NOT NULL,
-    user_name        VARCHAR                    NOT NULL,
+    user_name        VARCHAR,
     first_name       VARCHAR,
     last_name        VARCHAR
 );
