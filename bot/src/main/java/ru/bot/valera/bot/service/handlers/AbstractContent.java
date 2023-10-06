@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendVideo;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import ru.bot.valera.bot.model.Command;
 import ru.bot.valera.bot.model.Content;
 import ru.bot.valera.bot.service.keyboards.Keyboard;
 import ru.bot.valera.bot.to.UpdateTo;
@@ -13,12 +14,16 @@ import ru.bot.valera.bot.to.UpdateTo;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static ru.bot.valera.bot.model.Command.FROM_ME_TEXT;
+import static ru.bot.valera.bot.model.Command.MAIN_EVENTS_OF_DAY;
+
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class AbstractContent implements Handler {
 
     protected Content getContent(String text, UpdateTo updateTO, Keyboard keyboard) {
-        return new Content(setParamMessage(getSendMessage(text, keyboard, updateTO.getChatId()), updateTO.getChatId(), updateTO.getMessageId()),
-                updateTO.getCommand());
+        Command command = updateTO.getCommand();
+        return new Content(setParamMessage(getSendMessage(text, keyboard, updateTO.getChatId()), command,
+                updateTO.getChatId(), updateTO.getMessageId()), command);
     }
 
     protected Content getContent(UpdateTo updateTO, Keyboard keyboard) {
@@ -26,8 +31,9 @@ public abstract class AbstractContent implements Handler {
     }
 
     protected Content getContent(String text, UpdateTo updateTO) {
-        return new Content(setParamMessage(getSendMessage(text), updateTO.getChatId(), updateTO.getMessageId()),
-                updateTO.getCommand());
+        Command command = updateTO.getCommand();
+        return new Content(setParamMessage(getSendMessage(text), command, updateTO.getChatId(), updateTO.getMessageId()),
+                command);
     }
 
     protected SendMessage getSendMessage(String text, Keyboard keyboard, long chatId) {
@@ -53,12 +59,15 @@ public abstract class AbstractContent implements Handler {
         return editMessageReplyMarkup;
     }
 
-    protected SendMessage setParamMessage(SendMessage sendMessageTemplate, long chatId, int messageId) {
+    protected SendMessage setParamMessage(SendMessage sendMessageTemplate, Command command, long chatId, int messageId) {
         sendMessageTemplate.enableMarkdown(true);
         sendMessageTemplate.setChatId(chatId);
 
         if (messageId != 0) {
             sendMessageTemplate.setReplyToMessageId(messageId);
+        }
+        if (command == MAIN_EVENTS_OF_DAY || command == FROM_ME_TEXT) {
+            formatAndSetMarkdownV2ForSendMessage(sendMessageTemplate);
         }
         return sendMessageTemplate;
     }
@@ -69,10 +78,30 @@ public abstract class AbstractContent implements Handler {
 
     protected void formatAndSetMarkdownV2ForSendVideo(SendVideo video) {
         video.setParseMode("MarkdownV2");
-        video.setCaption(video.getCaption().replaceAll("\\.", "\\\\."));
-        video.setCaption(video.getCaption().replaceAll("!", "\\\\!"));
-        video.setCaption(video.getCaption().replaceAll("\\(", "\\\\("));
-        video.setCaption(video.getCaption().replaceAll("\\)", "\\\\)"));
-        video.setCaption(video.getCaption().replaceAll("-", "\\\\-"));
+        video.setCaption(formatTextMarkdownV2(video.getCaption()));
+    }
+
+    protected void formatAndSetMarkdownV2ForSendMessage(SendMessage sendMessage) {
+        sendMessage.setParseMode("MarkdownV2");
+        sendMessage.setText(formatTextMarkdownV2(sendMessage.getText()));
+    }
+
+    protected String formatTextMarkdownV2(String text) {
+        if (!isEvenNumberOfStars(text)) {
+            text = text.replaceAll("\\*", "");
+        }
+        return text.replaceAll("\\.", "\\\\.").replaceAll("!", "\\\\!")
+                .replaceAll("\\(", "\\\\(").replaceAll("\\)", "\\\\)")
+                .replaceAll("-", "\\\\-");
+    }
+
+    private synchronized boolean isEvenNumberOfStars(String text) {
+        int countStars = 0;
+        for (Character ch : text.toCharArray()) {
+            if (ch == '*') {
+                countStars++;
+            }
+        }
+        return countStars % 2 == 0;
     }
 }

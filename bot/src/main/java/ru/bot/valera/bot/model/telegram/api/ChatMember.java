@@ -18,7 +18,7 @@ public class ChatMember {
 
         @Data
         public static class User {
-            int id;
+            long id;
             boolean is_bot;
             String first_name;
             String last_name;

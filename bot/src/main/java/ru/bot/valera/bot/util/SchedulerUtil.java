@@ -38,7 +38,7 @@ public class SchedulerUtil {
     public static int eventsOfDay = getRandomMinutesForHour();
     public static int weatherEkb = getRandomMinutesForHour();
 
-    public static int[] getRandomTime(int start, int end) {
+    public synchronized static int[] getRandomTime(int start, int end) {
         int[] result = new int[2];
         result[0] = getRandom(start, end);
         result[1] = getRandomMinutesForHour();
